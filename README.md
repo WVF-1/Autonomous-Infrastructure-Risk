@@ -207,7 +207,7 @@ Real policy reports are sensitive and proprietary. Simulation allows:
 
 **William V. Fullerton**  
 Statistics & Data Science | Finance Minor  
-Graduating December 2025
+Graduated December 2025
 
 This project serves as a **portfolio centerpiece** demonstrating:
 - Statistical thinking
