@@ -3,185 +3,229 @@ Attempting to identify and mitigate infrastructure risk utilizing only NLP techn
 
 --- 
 
-# Autonomous Infrastructure Risk  
-### Simulation-Driven Risk Inference from Synthetic Language
-
-> *Not only what we observe — but whether what we observe is itself on a collision course.*
-
----
-
 ## Project Overview
 
-This project explores a core challenge in modern autonomous systems:
+Policy and institutional decision-making often relies on large volumes of written reports—incident logs, compliance narratives, audit summaries—that are rarely structured for statistical modeling. This project demonstrates how **interpretable NLP techniques** can extract meaningful risk signals from text to support data-driven policy decisions.
 
-**Can we infer real, underlying system risk using only the language produced by the system itself?**
-
-To study this, we build a synthetic, fully controlled pipeline consisting of:
-
-- A **Rust-based infrastructure simulation** that models congestion and cascading failures  
-- An **autonomous reporting layer** that converts system state into imperfect natural language  
-- A **Python + NLP analysis stack** that attempts to recover true risk using text alone  
-
-While this implementation is framed around orbital congestion, the methodology is domain-agnostic and directly applicable to infrastructure such as networks, supply chains, finance, healthcare, and transportation systems.
+**Key Philosophy**: Clarity, reproducibility, and transparency over black-box complexity.
 
 ---
 
-## Core Idea
+## Motivation
 
-Most monitoring systems assume direct access to metrics.
+This project addresses a real-world challenge: **How do we systematically assess risk from unstructured policy documents?**
 
-Real autonomous systems often don’t work that way.
-
-Instead, we receive:
-- Status reports
-- Summaries
-- Alerts
-- Human-readable explanations
-
-This project asks:
-
-> **If the reporting language drifts, hedges, or simplifies — can we detect that the system itself is approaching failure?**
+By combining natural language processing with transparent machine learning, this pipeline:
+- Extracts interpretable features from text (TF-IDF, lexical markers, metadata)
+- Builds explainable classification models
+- Evaluates performance with policy-relevant metrics
+- Demonstrates the practical tradeoffs between precision and recall in imbalanced settings
 
 ---
 
+## Key Features
 
-### Separation of Concerns
-
-| Layer | Responsibility |
-|-----|----------------|
-| Simulation | Ground-truth system dynamics |
-| Reporting | Partial, uncertain observations |
-| NLP | Interpretation & inference |
-| Notebooks | Analysis & storytelling |
-
----
-
-## 🦀 Rust Simulation (Truth Engine)
-
-The Rust component models a congestible infrastructure system using:
-
-- **Agents** (e.g. satellites)
-- **Capacity tiers** (e.g. orbital bands)
-- **Stochastic failure events**
-- **Cascading risk dynamics**
-- **Policy parameters** (mitigation, launch rates, compliance)
-
-Crucially, **the simulation does not expose raw metrics directly**.
-
-Instead, it produces **autonomous status reports** whose language reflects:
-- Volatility
-- Risk
-- Confidence
-- Partial observability
-
-This mirrors real-world autonomous reporting systems.
+- **Transparent Feature Engineering**: TF-IDF, sentiment encoding, capacity utilization, and custom lexical features
+- **Multiple Model Comparison**: Logistic Regression, Random Forest, Gradient Boosting—all with proper class imbalance handling
+- **Policy-Focused Evaluation**: Emphasis on false negatives vs. false positives, not just accuracy
+- **Comprehensive Diagnostics**: Built-in tools to identify and fix common modeling issues
+- **Mars-Themed Visualizations**: 7 publication-ready charts with unique aesthetic
+- **End-to-End Reproducibility**: Clone, run, and reproduce all results
 
 ---
 
-## Autonomous Language Generation
+## Results Summary
 
-System state is translated into text using:
+### Best Model Performance
+- **Model**: Gradient Boosting with Sample Weights
+- **ROC-AUC**: 0.91
+- **F1-Score**: 0.52
+- **Recall**: 0.57 (critical for catching high-risk cases)
 
-- Controlled language templates
-- Risk-dependent hedging
-- Confidence modulation
-- Intentional ambiguity
-
-Example output:
-> *“Increased conjunction activity observed. Debris mitigation protocols remain nominal, though elevated risk persists.”*
-
-The language is **systematic**, not random — enabling meaningful NLP analysis.
-
----
-
-## NLP Risk Inference
-
-Using **only the generated text**, the NLP pipeline attempts to infer:
-
-- System stability class (Stable / Degrading / Critical)
-- Underlying congestion trends
-- Imminence of cascading failure
-
-### Techniques Used
-- Lexical & syntactic features
-- Hedging and modality analysis
-- Sentence complexity drift
-- Classical ML models (interpretable by design)
-
-The goal is **not maximum accuracy**, but **insight into language–risk alignment**.
+### Key Insights
+1. **Class Imbalance Matters**: High accuracy (~94%) masks the real challenge—detecting minority high-risk cases
+2. **Feature Engineering is Critical**: TF-IDF and metadata features dramatically outperform simple keyword counts
+3. **Policy Tradeoffs**: Conservative thresholds catch more risks but generate false alarms; aggressive thresholds reduce alarms but miss risks
 
 ---
 
-## Notebooks
+## Installation
 
-The analysis is organized as a narrative sequence:
+### Prerequisites
+- Python 3.9 or higher
+- pip package manager
 
-1. **Simulation Overview**  
-   Ground truth congestion dynamics
+### Setup
 
-2. **Language Analysis**  
-   How reports change as risk increases
-
-3. **Risk Inference Models**  
-   Predicting system state from text alone
-
-4. **Policy Comparison**  
-   When systems *sound* safer than they are
-
----
-
-## Synthetic Data Philosophy
-
-All data is:
-- Fully synthetic
-- Fully reproducible
-- Fully controllable
-
-This allows:
-- Exact ground truth comparison
-- Safe experimentation
-- No data leakage or privacy concerns
-
----
-
-## Generalization Beyond Space
-
-Orbital congestion is simply one instance of a broader pattern:
-
-> **Agents competing for shared capacity with non-linear failure risk**
-
-The same framework applies to:
-- Network traffic congestion
-- Financial liquidity stress
-- Supply chain bottlenecks
-- Hospital resource overload
-- Urban traffic systems
-
-Only the domain skin changes — the methodology remains intact.
-
----
-
-
----
-
-## Why This Project Matters
-
-This project sits at the intersection of:
-- Simulation modeling
-- Autonomous systems
-- Natural language processing
-- Infrastructure risk
-- AI interpretability
-
-It focuses not on *prediction for its own sake*, but on **understanding when system narratives diverge from reality**.
-
----
-
-## Getting Started
-
-### Rust Simulation
 ```bash
-cd rust-sim
-cargo run
+# Clone the repository
+git clone https://github.com/yourusername/policy-risk-inference.git
+cd policy-risk-inference
 
+# Install dependencies
+pip install -r requirements.txt
+```
 
+### Required Packages
+```
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+imbalanced-learn
+jupyter
+```
+
+---
+
+## Pipeline Walkthrough
+
+### Step 1: Create Target Variable
+```bash
+python 00_create_target_variable.py
+```
+Generates risk labels from multiple signals (sentiment, load factor, capacity). Creates a realistic imbalanced dataset (~15% high-risk).
+
+### Step 2: Language Analysis
+```bash
+python 02_report_language_analysis.py
+```
+Extracts and analyzes text features. Generates visualizations showing language patterns by risk level.
+
+### Step 3: Model Training
+```bash
+python 03_risk_inference_model.py
+```
+Trains baseline models (Logistic Regression, Random Forest) and evaluates with confusion matrices, ROC curves, and classification reports.
+
+### Step 4: Policy Comparison
+```bash
+python 04_policy_comparison.py
+```
+Simulates three decision thresholds (Conservative, Balanced, Aggressive) and analyzes policy implications.
+
+### Step 5: Diagnostic & Fix
+```bash
+python 05_model_diagnostic_and_fix.py
+```
+Runs comprehensive diagnostics to identify issues (class imbalance, feature quality, model collapse) and applies fixes (SMOTE, class weights, undersampling).
+
+### Step 6: Enhanced Modeling
+```bash
+python 06_complete_model_fix.py
+```
+**Main pipeline**: Performs advanced feature engineering, trains 4 models, selects the best, and saves everything for deployment.
+
+### Step 7: Visualizations
+```bash
+python 07_mars_themed_visualizations.py
+```
+Generates 7 publication-ready Mars-themed visualizations showcasing model performance, feature importance, and NLP insights.
+
+---
+
+## Visualizations
+
+The project includes seven professional visualizations with a distinctive Mars color scheme:
+
+1. **Class Distribution**: Risk label balance analysis
+2. **Feature Importance**: Top features driving predictions
+3. **ROC Curves**: Model discrimination comparison
+4. **F1 vs AUC**: Understanding metric tradeoffs
+5. **Confusion Matrix**: Detailed error breakdown
+6. **Text Features**: NLP analysis by risk level
+7. **Performance Radar**: Multi-metric model comparison
+
+All visualizations saved to `figures/mars_theme/`
+
+---
+
+## Educational Value
+
+### What This Project Demonstrates
+
+**NLP Fundamentals**
+- Text preprocessing and cleaning
+- TF-IDF feature extraction
+- N-gram analysis
+- Lexical feature engineering
+
+**Machine Learning**
+- Handling severe class imbalance (SMOTE, class weights, undersampling)
+- Model comparison and selection
+- Hyperparameter considerations
+- Evaluation beyond accuracy
+
+**Data Science Best Practices**
+- Reproducible pipelines
+- Comprehensive diagnostics
+- Clear documentation
+- Interpretable results
+
+**Policy Applications**
+- Threshold optimization
+- False positive vs. false negative tradeoffs
+- Cost-sensitive decision making
+- Human-in-the-loop considerations
+
+---
+
+## Design Philosophy
+
+### Why Simple Models?
+
+This project deliberately uses **interpretable models** (Logistic Regression, Random Forest, Gradient Boosting) rather than deep learning because:
+
+1. **Transparency**: Stakeholders can understand *why* a report is flagged as high-risk
+2. **Debuggability**: Feature importance reveals what drives predictions
+3. **Resource Efficiency**: Fast training and inference
+4. **Generalization**: Simple models often perform better on small datasets
+
+### Why Simulated Data?
+
+Real policy reports are sensitive and proprietary. Simulation allows:
+- **Open sharing** of methodology and code
+- **Controlled experiments** with known ground truth
+- **Reproducibility** without data access barriers
+- **Demonstration** of techniques applicable to real-world scenarios
+
+---
+
+## Future Extensions
+
+- **Cost-Sensitive Learning**: Assign different costs to false positives vs. false negatives
+- **Temporal Analysis**: Detect risk drift over time
+- **Human-in-the-Loop**: Simulation of expert review workflows
+- **Advanced NLP**: BERT embeddings, topic modeling, named entity recognition
+- **Threshold Optimization**: Automated selection under policy constraints
+- **Active Learning**: Prioritize which reports to manually review
+
+---
+
+## Author
+
+**William V. Fullerton**  
+Statistics & Data Science | Finance Minor  
+Graduating December 2025
+
+This project serves as a **portfolio centerpiece** demonstrating:
+- Statistical thinking
+- NLP fundamentals
+- ML engineering
+- Research hygiene
+- Communication skills
+
+---
+
+## Acknowledgments
+
+- Inspired by real-world challenges in policy analytics and institutional risk management
+- Built with standard Python data science libraries
+- Mars-themed visualizations designed for maximum visual impact
+
+---
+
+** If you find this project useful, please consider giving it a star!**
+
+*Built with ❤️ for transparent, interpretable, and policy-relevant data science.*
