@@ -1,0 +1,22 @@
+[package]
+name = "autonomous-infrastructure-risk"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "Infrastructure simulation with autonomous language reporting"
+
+[dependencies]
+rand = "0.8"
+rand_distr = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+csv = "1.2"
+chrono = "0.4"
+
+[[bin]]
+name = "simulator"
+path = "src/main.rs"
+
+[lib]
+name = "autonomous_infrastructure_risk"
+path = "src/lib.rs"
