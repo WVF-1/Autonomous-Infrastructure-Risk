@@ -5,7 +5,7 @@ Attempting to identify and mitigate infrastructure risk utilizing only NLP techn
 
 ## Project Overview
 
-Policy and institutional decision-making often relies on large volumes of written reports—incident logs, compliance narratives, audit summaries—that are rarely structured for statistical modeling. This project demonstrates how **interpretable NLP techniques** can extract meaningful risk signals from text to support data-driven policy decisions.
+Policy and institutional decision-making often relies on large volumes of written reports—incident logs, compliance narratives, audit summaries—that are rarely structured for statistical modeling. This project demonstrates how **interpretable NLP techniques** can extract meaningful risk signals from text to support data-driven policy decisions. This project combines manual causal inference and systems-level analysis to study AI reliability and failure modes in autonomous space operations.
 
 **Key Philosophy**: Clarity, reproducibility, and transparency over black-box complexity.
 
@@ -168,6 +168,42 @@ All visualizations saved to `figures/mars_theme/`
 - False positive vs. false negative tradeoffs
 - Cost-sensitive decision making
 - Human-in-the-loop considerations
+
+---
+
+## Manual Causal Analysis (Library-Free)
+
+To ensure full transparency and reproducibility, this project implements manual causal inference techniques rather than relying on specialized causal libraries (e.g., EconML or DoWhy).
+
+Key components include:
+
+Naïve ATE estimation to establish a baseline relationship between system load and overcapacity events
+
+Stratified ATE estimation to control for heterogeneity across operational regimes
+
+A manual Double Machine Learning (DML)–inspired workflow, using residualization and cross-fitting logic implemented directly in NumPy and pandas
+
+This approach avoids dependency issues, clarifies assumptions, and emphasizes conceptual understanding of causal mechanisms—particularly important for safety-critical domains like space operations.
+
+---
+
+## Failure Modes of AI in Space Operations
+
+Beyond estimating causal effects, this project analyzes four fundamental failure modes of AI systems operating in autonomous, high-risk environments:
+
+Distributional Blindness
+Average effects mask rare but catastrophic system states.
+
+Load–Capacity Interaction Collapse
+Failures emerge from variable interactions rather than single thresholds.
+
+Delayed Feedback Instability
+Risk accelerates faster than AI systems can adapt using historical feedback.
+
+Policy Overgeneralization
+Global decision rules fail in heterogeneous operational regimes.
+
+Each failure mode is supported by a dedicated visualization, along with a final state-space synthesis plot that highlights where AI systems are most vulnerable. Together, these analyses demonstrate why causal reasoning is essential for reliable AI deployment in space and other safety-critical systems.
 
 ---
 
